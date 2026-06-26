@@ -12,3 +12,5 @@ ipykernel
 pytest
 fairlearn
 shap
+
+streamlit
