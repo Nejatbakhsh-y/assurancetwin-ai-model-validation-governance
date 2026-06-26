@@ -440,7 +440,7 @@ assurancetwin-ai-model-validation-governance/
 ### Step 1 — Clone the repository
 
 ```powershell
-git clone https://github.com/YOUR-USERNAME/assurancetwin-ai-model-validation-governance.git
+git clone https://github.com/YOUR-GITHUB-USERNAME/assurancetwin-ai-model-validation-governance.git
 cd assurancetwin-ai-model-validation-governance
 ```
 
