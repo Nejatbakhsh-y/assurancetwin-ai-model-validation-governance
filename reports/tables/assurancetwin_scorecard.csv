@@ -1,0 +1,10 @@
+component,weight,score_0_to_100,weighted_points,status,evidence_file
+Predictive Performance Score,0.2,94.4,18.88,Strong,reports\tables\independent_validation_metrics.csv; reports\tables\model_performance_summary.csv
+Calibration Score,0.15,74.5,11.17,Acceptable,reports\tables\calibration_summary.csv; reports\tables\independent_validation_metrics.csv
+Fairness Score,0.2,65.84,13.17,Needs remediation,reports\tables\fairness_metrics.csv
+Robustness / Stress-Test Score,0.15,43.82,6.57,Insufficient evidence or high risk,reports\tables\stress_test_results.csv
+Drift Stability Score,0.1,68.2,6.82,Needs remediation,reports\tables\drift_monitoring_summary.csv
+Explainability Stability Score,0.1,67.63,6.76,Needs remediation,reports\tables\explanation_stability.csv
+Documentation Completeness Score,0.05,100.0,5.0,Strong,README.md; docs\model_inventory_template.md; reports\tables\model_inventory.csv; reports\validation\model_validation_report.md; reports\validation\fairness_validation_report.md; reports\validation\stress_testing_report.md; reports\validation\monitoring_plan.md
+Monitoring Readiness Score,0.05,100.0,5.0,Strong,reports\validation\monitoring_plan.md; reports\tables\drift_monitoring_summary.csv; reports\figures\drift_dashboard_plot.png
+AssuranceTwin Score,1.0,73.37,73.37,Acceptable,Aggregate score from all model-governance components
