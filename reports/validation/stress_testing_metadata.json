@@ -1,0 +1,34 @@
+{
+  "script": "scripts/10_stress_testing.py",
+  "target_column": "approved",
+  "data_path": "data\\processed\\hmda_modeling_dataset.csv",
+  "results_path": "reports\\tables\\stress_test_results.csv",
+  "figure_path": "reports\\figures\\stress_test_model_sensitivity.png",
+  "report_path": "reports\\validation\\stress_testing_report.md",
+  "probability_threshold": 0.5,
+  "random_state": 42,
+  "test_size": 0.3,
+  "used_fallback_models": false,
+  "models": [
+    {
+      "model_name": "logistic_regression",
+      "model_source": "models\\champion_model.pkl",
+      "feature_column_count": 26
+    },
+    {
+      "model_name": "gradient_boosting",
+      "model_source": "models\\challenger_model.pkl",
+      "feature_column_count": 26
+    }
+  ],
+  "stress_scenarios": [
+    "baseline",
+    "income_shock",
+    "loan_amount_increase",
+    "ltv_increase",
+    "missing_data_shock",
+    "minority_tract_distribution_shift",
+    "out_of_time_validation",
+    "recession_like_synthetic"
+  ]
+}
