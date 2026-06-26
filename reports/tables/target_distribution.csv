@@ -1,0 +1,9 @@
+target_variable,target_value,target_label,count,percent
+action_taken,1,Loan originated,156859,48.4222
+action_taken,2,Application approved but not accepted,9139,2.8212
+action_taken,3,Application denied,58375,18.0203
+action_taken,4,Application withdrawn by applicant,45793,14.1363
+action_taken,5,File closed for incompleteness,19149,5.9113
+action_taken,6,Purchased loan,33936,10.476
+action_taken,7,Preapproval request denied,110,0.034
+action_taken,8,Preapproval request approved but not accepted,579,0.1787

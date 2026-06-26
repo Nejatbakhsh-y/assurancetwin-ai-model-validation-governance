@@ -27,3 +27,7 @@ outputs/temp/
 .DS_Store
 Thumbs.db
 .vscode/
+
+# Allow generated report table CSV files
+!reports/tables/
+!reports/tables/*.csv

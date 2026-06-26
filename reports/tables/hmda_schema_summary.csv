@@ -1,0 +1,100 @@
+column_name,sample_inferred_dtype,total_rows,non_missing_count,missing_count,missing_percent,unique_values_in_sample,numeric_like_percent_in_sample,example_values
+activity_year,string,323940,323940,0,0.0,1,100.0,2024
+lei,string,323940,323940,0,0.0,4,0.0,549300LYRWPSYPK6S325 | 549300U3721PJGQZYY68 | 549300R7HGHP2I754087 | 549300T94GSH3C4U5M59
+derived_msa-md,string,323940,323940,0,0.0,10,100.0,29484 | 35084 | 45940 | 15804 | 35614
+state_code,string,323940,323940,0,0.0,1,0.0,NJ
+county_code,string,323940,322224,1716,0.5297,21,100.0,34025 | 34013 | 34021 | 34015 | 34003
+census_tract,string,323940,321849,2091,0.6455,1646,100.0,34025807800 | 34013015500 | 34021002602 | 34015501605 | 34013002204
+conforming_loan_limit,string,323940,322654,1286,0.397,2,0.0,C | NC
+derived_loan_product_type,string,323940,323940,0,0.0,5,0.0,FHA:First Lien | VA:First Lien | Conventional:First Lien | Conventional:Subordinate Lien | FSA/RHS:First Lien
+derived_dwelling_category,string,323940,323940,0,0.0,1,0.0,Single Family (1-4 Units):Site-Built
+derived_ethnicity,string,323940,323940,0,0.0,4,0.0,Ethnicity Not Available | Hispanic or Latino | Not Hispanic or Latino | Joint
+derived_race,string,323940,323940,0,0.0,8,0.0,Race Not Available | White | Black or African American | Asian | Joint
+derived_sex,string,323940,323940,0,0.0,4,0.0,Sex Not Available | Joint | Female | Male
+action_taken,string,323940,323940,0,0.0,6,100.0,6 | 1 | 5 | 4 | 3
+purchaser_type,string,323940,323940,0,0.0,8,100.0,2 | 0 | 1 | 6 | 3
+preapproval,string,323940,323940,0,0.0,2,100.0,2 | 1
+loan_type,string,323940,323940,0,0.0,4,100.0,2 | 3 | 1 | 4
+loan_purpose,string,323940,323940,0,0.0,5,100.0,1 | 31 | 4 | 32 | 2
+lien_status,string,323940,323940,0,0.0,2,100.0,1 | 2
+reverse_mortgage,string,323940,323940,0,0.0,2,100.0,2 | 1
+open-end_line_of_credit,string,323940,323940,0,0.0,2,100.0,2 | 1
+business_or_commercial_purpose,string,323940,323940,0,0.0,2,100.0,2 | 1
+loan_amount,string,323940,323940,0,0.0,147,100.0,585000.0 | 505000.0 | 305000.0 | 455000.0 | 345000.0
+loan_to_value_ratio,string,323940,215661,108279,33.4256,1040,100.0,89.77100 | 49.87000 | 95.00000 | 77.25000 | 67.00000
+interest_rate,string,323940,201400,122540,37.828,131,100.0,5.625 | 6.375 | 6.875 | 6.625 | 6.750
+rate_spread,string,323940,149893,174047,53.7282,1230,100.0,0.362 | 0.873 | 0.427 | 0.742 | -0.28
+hoepa_status,string,323940,323940,0,0.0,2,100.0,2 | 3
+total_loan_costs,string,323940,139685,184255,56.8794,2666,100.0,15735.15 | 10597.41 | 6569.90 | 7517.48 | 12394.81
+total_points_and_fees,string,323940,6824,317116,97.8934,0,0.0,
+origination_charges,string,323940,140651,183289,56.5812,1769,100.0,1395.00 | 0.00 | 1640.00 | 900.00 | 1595.00
+discount_points,string,323940,73546,250394,77.2964,1438,100.0,100.00 | 6662.50 | 14060.55 | 5694.94 | 44505.45
+lender_credits,string,323940,51770,272170,84.0186,853,100.0,2123.00 | 1592.47 | 1773.69 | 609.82 | 2920.92
+loan_term,string,323940,319063,4877,1.5055,66,100.0,360 | 349 | 343 | 352 | 252
+prepayment_penalty_term,string,323940,23937,300003,92.6107,0,0.0,
+intro_rate_period,string,323940,79632,244308,75.4177,5,100.0,1 | 6 | 84 | 60 | 120
+negative_amortization,string,323940,323940,0,0.0,1,100.0,2
+interest_only_payment,string,323940,323940,0,0.0,2,100.0,2 | 1
+balloon_payment,string,323940,323940,0,0.0,1,100.0,2
+other_nonamortizing_features,string,323940,323940,0,0.0,1,100.0,2
+property_value,string,323940,251216,72724,22.4498,180,100.0,605000 | 745000 | 575000 | 535000 | 485000
+construction_method,string,323940,323940,0,0.0,1,100.0,1
+occupancy_type,string,323940,323940,0,0.0,3,100.0,1 | 3 | 2
+manufactured_home_secured_property_type,string,323940,323940,0,0.0,1,100.0,3
+manufactured_home_land_property_interest,string,323940,323940,0,0.0,1,100.0,5
+total_units,string,323940,323940,0,0.0,4,100.0,1 | 2 | 3 | 4
+multifamily_affordable_units,string,323940,5950,317990,98.1632,0,0.0,
+income,string,323940,277010,46930,14.4873,517,100.0,159 | 131 | 190 | 94 | 316
+debt_to_income_ratio,string,323940,204753,119187,36.7929,19,54.8828,39 | 50%-60% | 30%-<36% | 45 | <20%
+applicant_credit_score_type,string,323940,323940,0,0.0,5,100.0,9 | 3 | 2 | 1 | 15
+co-applicant_credit_score_type,string,323940,323940,0,0.0,6,100.0,9 | 10 | 2 | 1 | 3
+applicant_ethnicity-1,string,323940,323709,231,0.0713,7,100.0,4 | 1 | 2 | 3 | 14
+applicant_ethnicity-2,string,323940,19060,304880,94.1162,5,100.0,14 | 13 | 12 | 11 | 2
+applicant_ethnicity-3,string,323940,489,323451,99.849,4,100.0,2 | 13 | 14 | 12
+applicant_ethnicity-4,string,323940,11,323929,99.9966,0,0.0,
+applicant_ethnicity-5,string,323940,0,323940,100.0,0,0.0,
+co-applicant_ethnicity-1,string,323940,323871,69,0.0213,9,100.0,4 | 1 | 5 | 2 | 3
+co-applicant_ethnicity-2,string,323940,6851,317089,97.8851,5,100.0,14 | 13 | 12 | 11 | 2
+co-applicant_ethnicity-3,string,323940,150,323790,99.9537,4,100.0,14 | 12 | 13 | 2
+co-applicant_ethnicity-4,string,323940,4,323936,99.9988,0,0.0,
+co-applicant_ethnicity-5,string,323940,1,323939,99.9997,0,0.0,
+applicant_ethnicity_observed,string,323940,323940,0,0.0,3,100.0,3 | 2 | 1
+co-applicant_ethnicity_observed,string,323940,323940,0,0.0,4,100.0,3 | 2 | 4 | 1
+applicant_race-1,string,323940,323785,155,0.0478,14,100.0,7 | 6 | 5 | 3 | 2
+applicant_race-2,string,323940,24736,299204,92.364,11,100.0,25 | 5 | 21 | 22 | 23
+applicant_race-3,string,323940,1066,322874,99.6709,8,100.0,3 | 5 | 22 | 21 | 4
+applicant_race-4,string,323940,98,323842,99.9697,1,100.0,5
+applicant_race-5,string,323940,22,323918,99.9932,0,0.0,
+co-applicant_race-1,string,323940,323889,51,0.0157,13,100.0,7 | 6 | 8 | 3 | 2
+co-applicant_race-2,string,323940,9576,314364,97.0439,10,100.0,5 | 25 | 21 | 23 | 3
+co-applicant_race-3,string,323940,387,323553,99.8805,3,100.0,5 | 27 | 21
+co-applicant_race-4,string,323940,23,323917,99.9929,0,0.0,
+co-applicant_race-5,string,323940,5,323935,99.9985,0,0.0,
+applicant_race_observed,string,323940,323940,0,0.0,3,100.0,3 | 2 | 1
+co-applicant_race_observed,string,323940,323940,0,0.0,4,100.0,3 | 2 | 4 | 1
+applicant_sex,string,323940,323940,0,0.0,5,100.0,4 | 1 | 2 | 3 | 6
+co-applicant_sex,string,323940,323940,0,0.0,6,100.0,4 | 2 | 5 | 1 | 3
+applicant_sex_observed,string,323940,323940,0,0.0,3,100.0,3 | 2 | 1
+co-applicant_sex_observed,string,323940,323940,0,0.0,4,100.0,3 | 2 | 4 | 1
+applicant_age,string,323940,323940,0,0.0,8,24.12,8888 | 35-44 | 45-54 | 55-64 | 25-34
+co-applicant_age,string,323940,323940,0,0.0,9,62.88,8888 | 45-54 | 9999 | 65-74 | 55-64
+applicant_age_above_62,string,323940,282758,41182,12.7128,2,0.0,No | Yes
+co-applicant_age_above_62,string,323940,114941,208999,64.5178,2,0.0,No | Yes
+submission_of_application,string,323940,323940,0,0.0,3,100.0,3 | 1 | 2
+initially_payable_to_institution,string,323940,323940,0,0.0,3,100.0,3 | 1 | 2
+aus-1,string,323940,323940,0,0.0,5,100.0,6 | 2 | 3 | 1 | 4
+aus-2,string,323940,18277,305663,94.3579,2,100.0,3 | 2
+aus-3,string,323940,6360,317580,98.0367,0,0.0,
+aus-4,string,323940,1951,321989,99.3977,0,0.0,
+aus-5,string,323940,1625,322315,99.4984,0,0.0,
+denial_reason-1,string,323940,323940,0,0.0,9,100.0,10 | 3 | 4 | 1 | 9
+denial_reason-2,string,323940,11195,312745,96.5441,8,100.0,6 | 9 | 5 | 4 | 2
+denial_reason-3,string,323940,1617,322323,99.5008,6,100.0,3 | 4 | 9 | 1 | 6
+denial_reason-4,string,323940,172,323768,99.9469,1,100.0,9
+tract_population,string,323940,323940,0,0.0,1430,100.0,4333 | 4104 | 4348 | 4197 | 1963
+tract_minority_population_percent,string,323940,323940,0,0.0,1484,100.0,69.1 | 66.33 | 57.73 | 26.21 | 95.82
+ffiec_msa_md_median_family_income,string,323940,323940,0,0.0,10,100.0,135900 | 133300 | 125900 | 117400 | 101900
+tract_to_msa_income_percentage,string,323940,323940,0,0.0,220,100.0,90 | 107 | 73 | 80 | 78
+tract_owner_occupied_units,string,323940,323940,0,0.0,1125,100.0,1497 | 963 | 984 | 1524 | 445
+tract_one_to_four_family_homes,string,323940,323940,0,0.0,1114,100.0,1583 | 1130 | 1472 | 1853 | 844
+tract_median_age_of_housing_units,string,323940,323940,0,0.0,72,100.0,54 | 74 | 70 | 41 | 72
