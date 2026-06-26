@@ -14,7 +14,8 @@
 | Independent Validator | Independent model validation reviewer / project validator |
 | Generated Date | June 26, 2026 |
 | Documentation Completeness | 11 of 11 expected evidence files available (100.00%) |
-| Approval Recommendation | Conditional Approval Pending Evidence Completion |
+| AssuranceTwin Score | Not extracted |
+| Approval Recommendation | Conditional Approval Pending Score Extraction |
 
 ## Intended Use
 
@@ -26,7 +27,7 @@ The model card is designed for use by model developers, independent validators, 
 
 This model should not be used for actual mortgage underwriting, consumer credit decisions, pricing, adverse action notices, regulatory reporting, or automated decision-making affecting real applicants. The data and validation framework support research, demonstration, and governance prototyping only.
 
-The model should not be used outside the documented population, geography, time period, or data-generating process without additional validation.
+The model should not be used outside the documented population, geography, time period, product scope, or data-generating process without additional independent validation.
 
 ## Dataset Summary
 
@@ -185,9 +186,9 @@ The AssuranceTwin score combines predictive performance, calibration, fairness, 
 
 ## Approval Recommendation
 
-**Recommendation:** Conditional Approval Pending Evidence Completion
+**Recommendation:** Conditional Approval Pending Score Extraction
 
-**Rationale:** The final approval recommendation should remain conditional because the AssuranceTwin score could not be extracted from the scorecard. The model should not proceed to production until all validation evidence is complete and reviewed.
+**Rationale:** The final approval recommendation remains conditional because the AssuranceTwin score could not be extracted from the scorecard. The evidence files may be complete, but the scorecard structure should be reviewed before final committee approval.
 
 ## Key Limitations
 

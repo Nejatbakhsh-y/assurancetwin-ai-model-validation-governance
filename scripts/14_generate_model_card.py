@@ -7,8 +7,9 @@ Creates:
     docs/validation_checklist.md
 
 This script is designed for the AssuranceTwin AI - Model Validation Governance project.
-It reads validation outputs from prior steps when available and creates professional
-model governance documentation suitable for a model risk committee package.
+
+It reads available validation evidence from prior project steps and generates
+professional model governance documentation suitable for a model risk committee package.
 """
 
 from __future__ import annotations
@@ -29,7 +30,6 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 DOCS_DIR = REPO_ROOT / "docs"
 TABLES_DIR = REPO_ROOT / "reports" / "tables"
 VALIDATION_DIR = REPO_ROOT / "reports" / "validation"
-FIGURES_DIR = REPO_ROOT / "reports" / "figures"
 
 DOCS_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -39,7 +39,7 @@ OUTPUT_CHECKLIST = DOCS_DIR / "validation_checklist.md"
 
 
 # ---------------------------------------------------------------------
-# Expected evidence files from previous steps
+# Expected evidence files
 # ---------------------------------------------------------------------
 
 EXPECTED_INPUTS = {
@@ -62,7 +62,7 @@ EXPECTED_INPUTS = {
 # ---------------------------------------------------------------------
 
 def read_csv_safe(path: Path) -> pd.DataFrame:
-    """Read a CSV file safely. Return an empty DataFrame if missing or unreadable."""
+    """Read a CSV safely. Return an empty DataFrame if missing or unreadable."""
     if not path.exists():
         return pd.DataFrame()
 
@@ -74,9 +74,15 @@ def read_csv_safe(path: Path) -> pd.DataFrame:
 
 
 def clean_text(value) -> str:
-    """Convert values to clean markdown-safe strings."""
-    if pd.isna(value):
+    """Convert values to clean markdown-safe text."""
+    if value is None:
         return ""
+    try:
+        if pd.isna(value):
+            return ""
+    except Exception:
+        pass
+
     text = str(value).strip()
     text = text.replace("\n", "<br>")
     text = text.replace("|", "\\|")
@@ -84,7 +90,7 @@ def clean_text(value) -> str:
 
 
 def markdown_table_from_rows(headers: List[str], rows: List[List[object]]) -> str:
-    """Create a markdown table from headers and rows without requiring tabulate."""
+    """Create a markdown table from headers and rows."""
     if not rows:
         return "_No data available._"
 
@@ -123,32 +129,48 @@ def dataframe_to_markdown(
 
 
 def evidence_status(path: Path) -> str:
-    """Return a documentation status label for an evidence file."""
+    """Return evidence availability status."""
     return "Available" if path.exists() else "Missing"
 
 
 def load_all_inputs() -> Dict[str, pd.DataFrame]:
-    """Load all expected evidence tables."""
+    """Load all expected evidence files."""
     return {name: read_csv_safe(path) for name, path in EXPECTED_INPUTS.items()}
 
 
+def normalize_column_name(column_name: str) -> str:
+    """Normalize a column name for flexible matching."""
+    return (
+        str(column_name)
+        .strip()
+        .lower()
+        .replace(" ", "_")
+        .replace("-", "_")
+        .replace("/", "_")
+    )
+
+
 def find_first_existing_column(df: pd.DataFrame, candidates: List[str]) -> Optional[str]:
-    """Find a column using case-insensitive matching."""
+    """Find a column using flexible normalized matching."""
     if df.empty:
         return None
 
-    lower_map = {col.lower().strip(): col for col in df.columns}
+    normalized_map = {normalize_column_name(col): col for col in df.columns}
 
     for candidate in candidates:
-        key = candidate.lower().strip()
-        if key in lower_map:
-            return lower_map[key]
+        key = normalize_column_name(candidate)
+        if key in normalized_map:
+            return normalized_map[key]
 
     return None
 
 
-def get_inventory_value(inventory_df: pd.DataFrame, column_candidates: List[str], default: str) -> str:
-    """Extract first-row value from model inventory when available."""
+def get_inventory_value(
+    inventory_df: pd.DataFrame,
+    column_candidates: List[str],
+    default: str,
+) -> str:
+    """Extract first-row value from model inventory if available."""
     if inventory_df.empty:
         return default
 
@@ -157,122 +179,203 @@ def get_inventory_value(inventory_df: pd.DataFrame, column_candidates: List[str]
         return default
 
     value = inventory_df.iloc[0].get(col, default)
-    if pd.isna(value) or str(value).strip() == "":
+
+    if value is None:
         return default
 
-    return str(value).strip()
+    try:
+        if pd.isna(value):
+            return default
+    except Exception:
+        pass
 
-
-def extract_assurancetwin_score(scorecard_df: pd.DataFrame) -> Optional[float]:
-    """
-    Extract or infer the AssuranceTwin score.
-
-    The function supports several possible scorecard structures:
-    1. A direct overall score column.
-    2. A row labeled AssuranceTwin / Overall / Total.
-    3. A component table with score and weight columns.
-    4. A component table with weighted_score.
-    """
-    if scorecard_df.empty:
-        return None
-
-    df = scorecard_df.copy()
-    df.columns = [str(c).strip() for c in df.columns]
-    lower_cols = {c.lower(): c for c in df.columns}
-
-    direct_score_columns = [
-        "assurancetwin_score",
-        "overall_score",
-        "final_score",
-        "score_total",
-        "total_score",
-    ]
-
-    for col_name in direct_score_columns:
-        if col_name in lower_cols:
-            values = pd.to_numeric(df[lower_cols[col_name]], errors="coerce").dropna()
-            if not values.empty:
-                return normalize_score(float(values.iloc[0]))
-
-    label_col = None
-    for candidate in ["metric", "component", "section", "category", "score_name"]:
-        if candidate in lower_cols:
-            label_col = lower_cols[candidate]
-            break
-
-    score_col = None
-    for candidate in ["score", "value", "component_score"]:
-        if candidate in lower_cols:
-            score_col = lower_cols[candidate]
-            break
-
-    if label_col and score_col:
-        labels = df[label_col].astype(str).str.lower()
-        mask = labels.str.contains("assurancetwin|overall|total|final", regex=True, na=False)
-        if mask.any():
-            values = pd.to_numeric(df.loc[mask, score_col], errors="coerce").dropna()
-            if not values.empty:
-                return normalize_score(float(values.iloc[0]))
-
-    weighted_col = None
-    for candidate in ["weighted_score", "weighted component score", "weighted"]:
-        if candidate in lower_cols:
-            weighted_col = lower_cols[candidate]
-            break
-
-    if weighted_col:
-        values = pd.to_numeric(df[weighted_col], errors="coerce").dropna()
-        if not values.empty:
-            return normalize_score(float(values.sum()))
-
-    score_col = None
-    weight_col = None
-
-    for candidate in ["score", "component_score", "value"]:
-        if candidate in lower_cols:
-            score_col = lower_cols[candidate]
-            break
-
-    for candidate in ["weight", "component_weight"]:
-        if candidate in lower_cols:
-            weight_col = lower_cols[candidate]
-            break
-
-    if score_col and weight_col:
-        scores = pd.to_numeric(df[score_col], errors="coerce")
-        weights = pd.to_numeric(df[weight_col], errors="coerce")
-
-        valid = scores.notna() & weights.notna()
-        if valid.any():
-            raw = float((scores[valid] * weights[valid]).sum())
-
-            # If weights are percentages, convert to proportions.
-            if weights[valid].sum() > 1.5:
-                raw = raw / 100.0
-
-            return normalize_score(raw)
-
-    return None
+    value = str(value).strip()
+    return value if value else default
 
 
 def normalize_score(score: float) -> float:
-    """Normalize a score to a 0-100 scale."""
+    """
+    Normalize a score to a 0-100 scale.
+
+    If the value is between 0 and 1, treat it as a proportion.
+    Otherwise, treat it as already being on a 0-100 scale.
+    """
     if score <= 1.0:
         score = score * 100.0
 
     return round(max(0.0, min(100.0, score)), 2)
 
 
+def extract_assurancetwin_score(scorecard_df: pd.DataFrame) -> Optional[float]:
+    """
+    Extract the final AssuranceTwin score from reports/tables/assurancetwin_scorecard.csv.
+
+    Supported scorecard structures include:
+
+    1. A final row labeled:
+       - AssuranceTwin Score
+       - Assurance Twin Score
+       - Overall Score
+       - Final Score
+       - Total Score
+
+    2. Columns such as:
+       - governance_component
+       - component
+       - metric
+       - score
+       - component_score
+       - weighted_score
+
+    3. A weighted component table where final score must be computed as:
+       sum(weight * component_score)
+
+    This corrected function handles the current project scorecard where the final row is:
+       AssuranceTwin Score | 1.00 | 73.37 | 73.37 | Acceptable
+    """
+    if scorecard_df is None or scorecard_df.empty:
+        return None
+
+    df = scorecard_df.copy()
+    df.columns = [str(c).strip() for c in df.columns]
+
+    normalized_columns = {normalize_column_name(c): c for c in df.columns}
+
+    # Direct final-score columns.
+    direct_score_columns = [
+        "assurancetwin_score",
+        "assurance_twin_score",
+        "overall_score",
+        "final_score",
+        "total_score",
+        "score_total",
+    ]
+
+    for candidate in direct_score_columns:
+        if candidate in normalized_columns:
+            col = normalized_columns[candidate]
+            values = pd.to_numeric(df[col], errors="coerce").dropna()
+            if not values.empty:
+                return normalize_score(float(values.iloc[0]))
+
+    # Label/component column candidates.
+    label_col = None
+    label_candidates = [
+        "governance_component",
+        "component",
+        "metric",
+        "score_component",
+        "section",
+        "category",
+        "score_name",
+        "name",
+    ]
+
+    for candidate in label_candidates:
+        if candidate in normalized_columns:
+            label_col = normalized_columns[candidate]
+            break
+
+    # Score-like columns.
+    score_col = None
+    score_candidates = [
+        "component_score",
+        "score",
+        "value",
+        "raw_score",
+        "final_score",
+        "overall_score",
+    ]
+
+    for candidate in score_candidates:
+        if candidate in normalized_columns:
+            score_col = normalized_columns[candidate]
+            break
+
+    weighted_col = None
+    weighted_candidates = [
+        "weighted_score",
+        "weighted_component_score",
+        "weighted_value",
+    ]
+
+    for candidate in weighted_candidates:
+        if candidate in normalized_columns:
+            weighted_col = normalized_columns[candidate]
+            break
+
+    # Best case: find final row and extract component_score/score first.
+    if label_col is not None:
+        labels = df[label_col].astype(str).str.lower().str.strip()
+
+        final_score_mask = labels.str.contains(
+            "assurancetwin score|assurance twin score|overall score|final score|total score",
+            regex=True,
+            na=False,
+        )
+
+        if final_score_mask.any():
+            if score_col is not None:
+                values = pd.to_numeric(df.loc[final_score_mask, score_col], errors="coerce").dropna()
+                if not values.empty:
+                    return normalize_score(float(values.iloc[0]))
+
+            if weighted_col is not None:
+                values = pd.to_numeric(df.loc[final_score_mask, weighted_col], errors="coerce").dropna()
+                if not values.empty:
+                    return normalize_score(float(values.iloc[0]))
+
+    # Fallback: compute weighted score from component rows, excluding final total row.
+    weight_col = None
+    weight_candidates = [
+        "weight",
+        "component_weight",
+    ]
+
+    for candidate in weight_candidates:
+        if candidate in normalized_columns:
+            weight_col = normalized_columns[candidate]
+            break
+
+    if score_col is not None and weight_col is not None:
+        work = df.copy()
+
+        if label_col is not None:
+            labels = work[label_col].astype(str).str.lower().str.strip()
+            total_mask = labels.str.contains(
+                "assurancetwin score|assurance twin score|overall score|final score|total score",
+                regex=True,
+                na=False,
+            )
+            work = work.loc[~total_mask].copy()
+
+        scores = pd.to_numeric(work[score_col], errors="coerce")
+        weights = pd.to_numeric(work[weight_col], errors="coerce")
+
+        valid = scores.notna() & weights.notna()
+
+        if valid.any():
+            raw_score = float((scores[valid] * weights[valid]).sum())
+
+            # If weights are percentages rather than proportions, convert.
+            if float(weights[valid].sum()) > 1.5:
+                raw_score = raw_score / 100.0
+
+            return normalize_score(raw_score)
+
+    return None
+
+
 def approval_recommendation(score: Optional[float]) -> Tuple[str, str]:
-    """Return an approval recommendation and rationale from the AssuranceTwin score."""
+    """Return approval recommendation and rationale."""
     if score is None:
         return (
-            "Conditional Approval Pending Evidence Completion",
+            "Conditional Approval Pending Score Extraction",
             (
-                "The final approval recommendation should remain conditional because "
-                "the AssuranceTwin score could not be extracted from the scorecard. "
-                "The model should not proceed to production until all validation evidence "
-                "is complete and reviewed."
+                "The final approval recommendation remains conditional because the "
+                "AssuranceTwin score could not be extracted from the scorecard. "
+                "The evidence files may be complete, but the scorecard structure should "
+                "be reviewed before final committee approval."
             ),
         )
 
@@ -282,7 +385,8 @@ def approval_recommendation(score: Optional[float]) -> Tuple[str, str]:
             (
                 f"The AssuranceTwin score is {score:.2f}/100, which supports approval "
                 "subject to documented monitoring, periodic validation refresh, and "
-                "continued fairness, calibration, drift, and performance surveillance."
+                "continued performance, calibration, fairness, drift, robustness, and "
+                "explainability surveillance."
             ),
         )
 
@@ -292,7 +396,8 @@ def approval_recommendation(score: Optional[float]) -> Tuple[str, str]:
             (
                 f"The AssuranceTwin score is {score:.2f}/100. The model may be considered "
                 "for limited or controlled use only after remediation items are documented, "
-                "owners are assigned, and monitoring controls are approved."
+                "owners are assigned, monitoring controls are approved, and residual risks "
+                "are accepted by the appropriate governance authority."
             ),
         )
 
@@ -307,36 +412,30 @@ def approval_recommendation(score: Optional[float]) -> Tuple[str, str]:
 
 
 def completeness_summary() -> Tuple[int, int, float]:
-    """Calculate documentation evidence completeness."""
+    """Calculate evidence completeness."""
     total = len(EXPECTED_INPUTS)
     available = sum(1 for path in EXPECTED_INPUTS.values() if path.exists())
     pct = round(100.0 * available / total, 2) if total else 0.0
     return available, total, pct
 
 
+def source_files_missing() -> List[str]:
+    """Return names of missing expected evidence files."""
+    return [name for name, path in EXPECTED_INPUTS.items() if not path.exists()]
+
+
 def evidence_inventory_markdown() -> str:
-    """Create evidence inventory table."""
+    """Create markdown evidence inventory table."""
     rows = []
+
     for name, path in EXPECTED_INPUTS.items():
-        rows.append([
-            name,
-            path.as_posix().replace(REPO_ROOT.as_posix() + "/", ""),
-            evidence_status(path),
-        ])
+        relative_path = path.relative_to(REPO_ROOT).as_posix()
+        rows.append([name, relative_path, evidence_status(path)])
 
     return markdown_table_from_rows(
         ["Evidence Item", "Expected File", "Status"],
         rows,
     )
-
-
-def source_files_missing() -> List[str]:
-    """Return missing expected input names."""
-    missing = []
-    for name, path in EXPECTED_INPUTS.items():
-        if not path.exists():
-            missing.append(name)
-    return missing
 
 
 # ---------------------------------------------------------------------
@@ -364,31 +463,37 @@ def generate_model_card(data: Dict[str, pd.DataFrame]) -> str:
         ["model_name", "name"],
         "AssuranceTwin AI Champion Model",
     )
+
     model_type = get_inventory_value(
         inventory,
         ["model_type", "type", "algorithm"],
         "Supervised binary classification model",
     )
+
     business_use = get_inventory_value(
         inventory,
         ["business_use", "use_case", "purpose"],
         "Governed prediction of mortgage application approval outcome for model validation demonstration.",
     )
+
     risk_tier = get_inventory_value(
         inventory,
         ["risk_tier", "risk_level", "materiality"],
         "High / Material model risk due to potential credit-decision relevance.",
     )
+
     target_variable = get_inventory_value(
         inventory,
         ["target_variable", "target", "outcome"],
         "approved",
     )
+
     owner = get_inventory_value(
         inventory,
         ["owner", "model_owner"],
         "Model Development Owner",
     )
+
     validator = get_inventory_value(
         inventory,
         ["validator", "validation_owner"],
@@ -397,6 +502,8 @@ def generate_model_card(data: Dict[str, pd.DataFrame]) -> str:
 
     generated_date = datetime.now().strftime("%B %d, %Y")
     available, total, completeness = completeness_summary()
+
+    score_display = "Not extracted" if score is None else f"{score:.2f}/100"
 
     markdown = f"""# Model Card
 
@@ -414,6 +521,7 @@ def generate_model_card(data: Dict[str, pd.DataFrame]) -> str:
 | Independent Validator | {clean_text(validator)} |
 | Generated Date | {generated_date} |
 | Documentation Completeness | {available} of {total} expected evidence files available ({completeness:.2f}%) |
+| AssuranceTwin Score | {score_display} |
 | Approval Recommendation | {clean_text(recommendation)} |
 
 ## Intended Use
@@ -426,7 +534,7 @@ The model card is designed for use by model developers, independent validators, 
 
 This model should not be used for actual mortgage underwriting, consumer credit decisions, pricing, adverse action notices, regulatory reporting, or automated decision-making affecting real applicants. The data and validation framework support research, demonstration, and governance prototyping only.
 
-The model should not be used outside the documented population, geography, time period, or data-generating process without additional validation.
+The model should not be used outside the documented population, geography, time period, product scope, or data-generating process without additional independent validation.
 
 ## Dataset Summary
 
@@ -558,6 +666,7 @@ def generate_governance_card(data: Dict[str, pd.DataFrame]) -> str:
     scorecard = data["AssuranceTwin Scorecard"]
     score = extract_assurancetwin_score(scorecard)
     recommendation, recommendation_rationale = approval_recommendation(score)
+
     generated_date = datetime.now().strftime("%B %d, %Y")
     available, total, completeness = completeness_summary()
     missing = source_files_missing()
@@ -567,6 +676,8 @@ def generate_governance_card(data: Dict[str, pd.DataFrame]) -> str:
         if not missing
         else "; ".join(missing)
     )
+
+    score_display = "Not extracted" if score is None else f"{score:.2f}/100"
 
     markdown = f"""# AI Governance Card
 
@@ -579,6 +690,7 @@ def generate_governance_card(data: Dict[str, pd.DataFrame]) -> str:
 | Model Risk Tier | High / Material model risk for demonstration purposes |
 | Generated Date | {generated_date} |
 | Evidence Completeness | {available} of {total} expected evidence files available ({completeness:.2f}%) |
+| AssuranceTwin Score | {score_display} |
 | Approval Recommendation | {clean_text(recommendation)} |
 
 ## Intended Use
@@ -712,7 +824,9 @@ def generate_validation_checklist(data: Dict[str, pd.DataFrame]) -> str:
     scorecard = data["AssuranceTwin Scorecard"]
     score = extract_assurancetwin_score(scorecard)
     recommendation, recommendation_rationale = approval_recommendation(score)
+
     generated_date = datetime.now().strftime("%B %d, %Y")
+    score_display = "Not extracted" if score is None else f"{score:.2f}/100"
 
     rows = [
         [
@@ -753,7 +867,7 @@ def generate_validation_checklist(data: Dict[str, pd.DataFrame]) -> str:
         [
             "Explainability reviewed",
             evidence_status(EXPECTED_INPUTS["Explanation Stability"]),
-            "Review feature importance, permutation importance, SHAP-style explanations, and stability across groups/time/models.",
+            "Review feature importance, permutation importance, SHAP-style explanations, and stability across groups, time, and models.",
         ],
         [
             "Stress testing completed",
@@ -767,7 +881,7 @@ def generate_validation_checklist(data: Dict[str, pd.DataFrame]) -> str:
         ],
         [
             "AssuranceTwin score generated",
-            evidence_status(EXPECTED_INPUTS["AssuranceTwin Scorecard"]),
+            score_display,
             "Confirm final score and component scores across performance, calibration, fairness, robustness, drift, explainability, documentation, and monitoring.",
         ],
         [
@@ -814,6 +928,7 @@ This checklist summarizes the evidence required for the AssuranceTwin AI model v
 |---|---|
 | Project | AssuranceTwin AI - Model Validation Governance |
 | Generated Date | {generated_date} |
+| AssuranceTwin Score | {score_display} |
 | Approval Recommendation | {clean_text(recommendation)} |
 
 ## Validation Checklist
@@ -852,6 +967,9 @@ def main() -> None:
     OUTPUT_GOVERNANCE_CARD.write_text(governance_card, encoding="utf-8")
     OUTPUT_CHECKLIST.write_text(checklist, encoding="utf-8")
 
+    score = extract_assurancetwin_score(data["AssuranceTwin Scorecard"])
+    recommendation, _ = approval_recommendation(score)
+
     available, total, completeness = completeness_summary()
     missing = source_files_missing()
 
@@ -863,8 +981,17 @@ def main() -> None:
     print("\nEvidence completeness:")
     print(f"  - {available} of {total} expected evidence files available ({completeness:.2f}%)")
 
+    print("\nAssuranceTwin score:")
+    if score is None:
+        print("  - Not extracted")
+    else:
+        print(f"  - {score:.2f}/100")
+
+    print("\nApproval recommendation:")
+    print(f"  - {recommendation}")
+
     if missing:
-        print("\nMissing optional or expected evidence files:")
+        print("\nMissing expected evidence files:")
         for item in missing:
             print(f"  - {item}: {EXPECTED_INPUTS[item].relative_to(REPO_ROOT)}")
         print("\nThe markdown files were still generated. Missing evidence is marked in the documents.")

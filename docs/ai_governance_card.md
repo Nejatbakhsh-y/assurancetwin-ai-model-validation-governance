@@ -9,7 +9,8 @@
 | Model Risk Tier | High / Material model risk for demonstration purposes |
 | Generated Date | June 26, 2026 |
 | Evidence Completeness | 11 of 11 expected evidence files available (100.00%) |
-| Approval Recommendation | Conditional Approval Pending Evidence Completion |
+| AssuranceTwin Score | Not extracted |
+| Approval Recommendation | Conditional Approval Pending Score Extraction |
 
 ## Intended Use
 
@@ -122,9 +123,9 @@ The system should support expert review rather than replace accountable human ju
 
 ## Approval Recommendation
 
-**Recommendation:** Conditional Approval Pending Evidence Completion
+**Recommendation:** Conditional Approval Pending Score Extraction
 
-**Rationale:** The final approval recommendation should remain conditional because the AssuranceTwin score could not be extracted from the scorecard. The model should not proceed to production until all validation evidence is complete and reviewed.
+**Rationale:** The final approval recommendation remains conditional because the AssuranceTwin score could not be extracted from the scorecard. The evidence files may be complete, but the scorecard structure should be reviewed before final committee approval.
 
 ## Missing Evidence
 
