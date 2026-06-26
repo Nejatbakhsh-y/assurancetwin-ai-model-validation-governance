@@ -208,6 +208,122 @@ def normalize_score(score: float) -> float:
 
 def extract_assurancetwin_score(scorecard_df: pd.DataFrame) -> Optional[float]:
     """
+    Extract the final AssuranceTwin score from the scorecard.
+
+    This robust version does not depend on exact column names. It first searches
+    for any row containing 'AssuranceTwin Score' and then extracts the most
+    plausible numeric score from that row.
+
+    Expected current project row:
+        AssuranceTwin Score | 1.00 | 73.37 | 73.37 | Acceptable
+    """
+    if scorecard_df is None or scorecard_df.empty:
+        return None
+
+    df = scorecard_df.copy()
+    df.columns = [str(c).strip() for c in df.columns]
+
+    def row_contains_final_score_label(row: pd.Series) -> bool:
+        combined = " ".join(str(x) for x in row.values).lower()
+        combined = combined.replace("_", " ").replace("-", " ")
+        return (
+            "assurancetwin score" in combined
+            or "assurance twin score" in combined
+            or "overall score" in combined
+            or "final score" in combined
+            or "total score" in combined
+        )
+
+    def numeric_values_from_row(row: pd.Series) -> List[float]:
+        values = []
+        for item in row.values:
+            value = pd.to_numeric(item, errors="coerce")
+            if pd.notna(value):
+                values.append(float(value))
+        return values
+
+    # Primary method: find the final AssuranceTwin Score row.
+    for _, row in df.iterrows():
+        if row_contains_final_score_label(row):
+            numeric_values = numeric_values_from_row(row)
+
+            if numeric_values:
+                # Prefer values that already look like 0-100 scores.
+                score_like_values = [x for x in numeric_values if 1.0 < x <= 100.0]
+
+                if score_like_values:
+                    return normalize_score(max(score_like_values))
+
+                # If only a proportion exists, normalize it.
+                proportion_values = [x for x in numeric_values if 0.0 <= x <= 1.0]
+                if proportion_values:
+                    return normalize_score(max(proportion_values))
+
+    # Secondary method: direct column search.
+    normalized_columns = {normalize_column_name(c): c for c in df.columns}
+
+    direct_score_columns = [
+        "assurancetwin_score",
+        "assurance_twin_score",
+        "overall_score",
+        "final_score",
+        "total_score",
+        "score_total",
+    ]
+
+    for candidate in direct_score_columns:
+        if candidate in normalized_columns:
+            col = normalized_columns[candidate]
+            values = pd.to_numeric(df[col], errors="coerce").dropna()
+            if not values.empty:
+                plausible = values[(values > 1.0) & (values <= 100.0)]
+                if not plausible.empty:
+                    return normalize_score(float(plausible.iloc[-1]))
+                return normalize_score(float(values.iloc[-1]))
+
+    # Tertiary method: compute from component weights and component scores.
+    weight_col = None
+    score_col = None
+
+    for col in df.columns:
+        normalized = normalize_column_name(col)
+        if normalized in ["weight", "component_weight"]:
+            weight_col = col
+
+        if normalized in [
+            "score",
+            "component_score",
+            "normalized_score",
+            "scaled_score",
+            "value",
+            "raw_score",
+        ]:
+            score_col = col
+
+    if weight_col is not None and score_col is not None:
+        work = df.copy()
+
+        # Exclude total/final rows if present.
+        mask_final = work.apply(row_contains_final_score_label, axis=1)
+        work = work.loc[~mask_final].copy()
+
+        weights = pd.to_numeric(work[weight_col], errors="coerce")
+        scores = pd.to_numeric(work[score_col], errors="coerce")
+
+        valid = weights.notna() & scores.notna()
+
+        if valid.any():
+            weighted_score = float((weights[valid] * scores[valid]).sum())
+
+            # If weights are percentages, adjust.
+            if float(weights[valid].sum()) > 1.5:
+                weighted_score = weighted_score / 100.0
+
+            return normalize_score(weighted_score)
+
+    return None
+
+    """
     Extract the final AssuranceTwin score from reports/tables/assurancetwin_scorecard.csv.
 
     Supported scorecard structures include:
@@ -364,6 +480,9 @@ def extract_assurancetwin_score(scorecard_df: pd.DataFrame) -> Optional[float]:
             return normalize_score(raw_score)
 
     return None
+
+
+
 
 
 def approval_recommendation(score: Optional[float]) -> Tuple[str, str]:

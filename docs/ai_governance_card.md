@@ -9,8 +9,8 @@
 | Model Risk Tier | High / Material model risk for demonstration purposes |
 | Generated Date | June 26, 2026 |
 | Evidence Completeness | 11 of 11 expected evidence files available (100.00%) |
-| AssuranceTwin Score | Not extracted |
-| Approval Recommendation | Conditional Approval Pending Score Extraction |
+| AssuranceTwin Score | 73.37/100 |
+| Approval Recommendation | Conditional Approval |
 
 ## Intended Use
 
@@ -123,9 +123,9 @@ The system should support expert review rather than replace accountable human ju
 
 ## Approval Recommendation
 
-**Recommendation:** Conditional Approval Pending Score Extraction
+**Recommendation:** Conditional Approval
 
-**Rationale:** The final approval recommendation remains conditional because the AssuranceTwin score could not be extracted from the scorecard. The evidence files may be complete, but the scorecard structure should be reviewed before final committee approval.
+**Rationale:** The AssuranceTwin score is 73.37/100. The model may be considered for limited or controlled use only after remediation items are documented, owners are assigned, monitoring controls are approved, and residual risks are accepted by the appropriate governance authority.
 
 ## Missing Evidence
 

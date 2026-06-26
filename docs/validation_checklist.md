@@ -8,8 +8,8 @@ This checklist summarizes the evidence required for the AssuranceTwin AI model v
 |---|---|
 | Project | AssuranceTwin AI - Model Validation Governance |
 | Generated Date | June 26, 2026 |
-| AssuranceTwin Score | Not extracted |
-| Approval Recommendation | Conditional Approval Pending Score Extraction |
+| AssuranceTwin Score | 73.37/100 |
+| Approval Recommendation | Conditional Approval |
 
 ## Validation Checklist
 
@@ -25,12 +25,12 @@ This checklist summarizes the evidence required for the AssuranceTwin AI model v
 | Explainability reviewed | Available | Review feature importance, permutation importance, SHAP-style explanations, and stability across groups, time, and models. |
 | Stress testing completed | Available | Review income shock, loan amount shock, LTV shock, missing-data shock, minority-tract shift, out-of-time validation, and recession-like scenario. |
 | Drift monitoring simulated | Available | Review PSI, CSI, data drift, prediction drift, performance drift, fairness drift, and calibration drift. |
-| AssuranceTwin score generated | Not extracted | Confirm final score and component scores across performance, calibration, fairness, robustness, drift, explainability, documentation, and monitoring. |
+| AssuranceTwin score generated | 73.37/100 | Confirm final score and component scores across performance, calibration, fairness, robustness, drift, explainability, documentation, and monitoring. |
 | Model card generated | Generated | Confirm intended use, out-of-scope use, data summary, validation evidence, limitations, monitoring, and approval recommendation. |
 | AI governance card generated | Generated | Confirm governance use, protected attribute handling, model risks, monitoring requirements, human oversight, and documentation status. |
 | Human oversight defined | Required | Confirm accountable reviewers, override procedures, escalation path, and committee approval process. |
 | Production use restriction documented | Required | Confirm that the model is not used for actual underwriting, pricing, adverse action, or consumer-impacting automated decisions. |
-| Final model risk committee recommendation documented | Conditional Approval Pending Score Extraction | The final approval recommendation remains conditional because the AssuranceTwin score could not be extracted from the scorecard. The evidence files may be complete, but the scorecard structure should be reviewed before final committee approval. |
+| Final model risk committee recommendation documented | Conditional Approval | The AssuranceTwin score is 73.37/100. The model may be considered for limited or controlled use only after remediation items are documented, owners are assigned, monitoring controls are approved, and residual risks are accepted by the appropriate governance authority. |
 
 ## Evidence Inventory
 
