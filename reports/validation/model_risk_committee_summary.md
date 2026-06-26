@@ -1,82 +1,97 @@
-# Model Risk Committee Summary
+﻿# Model Risk Committee Summary
 
-Generated: 2026-06-26 12:15:37
+## Project Name
 
-## Executive Decision View
+AssuranceTwin AI — Model Validation and AI Governance Framework
 
-**AssuranceTwin Score:** 73.37 / 100
+## Committee Review Purpose
 
-**Risk Band:** Moderate model-risk concern
+This summary is intended for model risk committee review. It consolidates the key findings from model development, independent validation, fairness testing, calibration review, stress testing, explainability review, drift monitoring, and AI governance documentation.
 
-**Recommended Committee Action:** Conditionally approve, subject to remediation tracking and enhanced monitoring.
+## Model Use Case
 
-The AssuranceTwin Score is a composite model-governance score that combines predictive performance, calibration, fairness, stress robustness, drift stability, explainability stability, documentation completeness, and monitoring readiness.
+The project evaluates a mortgage lending decision model using public HMDA-style data. The model is designed as a controlled demonstration of financial-services AI governance, not as a production lending system.
 
-## Scorecard
+## Business Context
 
-| Component | Weight | Score | Weighted Points | Status |
-|---|---:|---:|---:|---|
-| Predictive Performance Score | 0.20 | 94.40 | 18.88 | Strong |
-| Calibration Score | 0.15 | 74.50 | 11.17 | Acceptable |
-| Fairness Score | 0.20 | 65.84 | 13.17 | Needs remediation |
-| Robustness / Stress-Test Score | 0.15 | 43.82 | 6.57 | Insufficient evidence or high risk |
-| Drift Stability Score | 0.10 | 68.20 | 6.82 | Needs remediation |
-| Explainability Stability Score | 0.10 | 67.63 | 6.76 | Needs remediation |
-| Documentation Completeness Score | 0.05 | 100.00 | 5.00 | Strong |
-| Monitoring Readiness Score | 0.05 | 100.00 | 5.00 | Strong |
-| AssuranceTwin Score | 1.00 | 73.37 | 73.37 | Acceptable |
+The model supports binary classification of mortgage application outcomes. Because the use case is high-stakes and financial in nature, the model requires strong validation, fairness review, monitoring controls, and documentation before any production consideration.
 
-## Main Strengths
+## Validation Scope
 
-- Documentation Completeness Score: 100.00 (Strong)
-- Monitoring Readiness Score: 100.00 (Strong)
-- Predictive Performance Score: 94.40 (Strong)
+The validation review covers:
 
-## Main Weaknesses / Remediation Priorities
+- Model inventory completeness
+- Champion and challenger comparison
+- Predictive performance
+- Calibration quality
+- Fairness and bias metrics
+- Explainability and feature-importance stability
+- Stress testing
+- Drift monitoring
+- Documentation completeness
+- Monitoring readiness
 
-- Robustness / Stress-Test Score: 43.82 (Insufficient evidence or high risk)
-- Fairness Score: 65.84 (Needs remediation)
-- Explainability Stability Score: 67.63 (Needs remediation)
+## Key Governance Principle
 
-## Required Committee Action Items
+The best predictive model is not automatically the best governed model. Committee review should consider performance together with fairness, calibration, transparency, robustness, monitoring design, and documented limitations.
 
-- Remediate **Fairness Score**. Current score: 65.84.
-- Remediate **Robustness / Stress-Test Score**. Current score: 43.82.
-- Remediate **Drift Stability Score**. Current score: 68.20.
-- Remediate **Explainability Stability Score**. Current score: 67.63.
+## Main Validation Findings
 
-## Evidence Used
+The project includes a structured validation workflow with performance metrics, confusion-matrix analysis, approval-rate analysis, calibration testing, group-level fairness analysis, stress testing, and monitoring simulation.
 
-- **Predictive Performance Score**: reports\tables\independent_validation_metrics.csv; reports\tables\model_performance_summary.csv
-- **Calibration Score**: reports\tables\calibration_summary.csv; reports\tables\independent_validation_metrics.csv
-- **Fairness Score**: reports\tables\fairness_metrics.csv
-- **Robustness / Stress-Test Score**: reports\tables\stress_test_results.csv
-- **Drift Stability Score**: reports\tables\drift_monitoring_summary.csv
-- **Explainability Stability Score**: reports\tables\explanation_stability.csv
-- **Documentation Completeness Score**: README.md; docs\model_inventory_template.md; reports\tables\model_inventory.csv; reports\validation\model_validation_report.md; reports\validation\fairness_validation_report.md; reports\validation\stress_testing_report.md; reports\validation\monitoring_plan.md
-- **Monitoring Readiness Score**: reports\validation\monitoring_plan.md; reports\tables\drift_monitoring_summary.csv; reports\figures\drift_dashboard_plot.png
+The validation package is designed to show how an independent validation team would assess a model before recommending approval, conditional approval, or rejection.
 
-## Scoring Formula
+## Fairness and Responsible AI Review
 
-```text
-AssuranceTwin Score =
-0.20 * Predictive Performance
-+ 0.15 * Calibration
-+ 0.20 * Fairness
-+ 0.15 * Robustness / Stress-Test
-+ 0.10 * Drift Stability
-+ 0.10 * Explainability Stability
-+ 0.05 * Documentation Completeness
-+ 0.05 * Monitoring Readiness
-```
+The fairness review evaluates whether model outcomes differ meaningfully across borrower and geography-related groups. The review includes approval-rate differences, disparate impact ratios, false-positive-rate gaps, false-negative-rate gaps, equal opportunity differences, and group-level calibration.
 
-## Interpretation Guide
+Any material group-level difference should be treated as a governance issue requiring additional review before production use.
 
-- **85 to 100:** Strong model-assurance posture.
-- **70 to 84.99:** Acceptable, with active monitoring and documented limitations.
-- **55 to 69.99:** Elevated model-risk concern; remediation should precede broad deployment.
-- **Below 55:** High model-risk concern or insufficient validation evidence.
+## Calibration Review
 
-## Governance Limitation
+Calibration is reviewed because financial-services models often rely on probability outputs, not only classification labels. Poor calibration can create incorrect risk ranking, distorted threshold decisions, and unreliable monitoring triggers.
 
-This score is a structured decision-support artifact, not an automatic model approval mechanism. Final approval should also consider model materiality, regulatory exposure, business use, implementation controls, change management, and independent validation sign-off.
+## Stress Testing Review
+
+Stress testing evaluates whether the model remains stable under adverse or shifted scenarios. The tested scenarios include income shock, loan amount increase, LTV increase, missing-data shock, minority-tract distribution shift, out-of-time validation, and recession-like synthetic stress.
+
+## Monitoring and Drift Review
+
+The monitoring framework includes data drift, prediction drift, performance drift, fairness drift, and calibration drift. This supports lifecycle governance and ongoing oversight after deployment.
+
+## Documentation Review
+
+The repository includes:
+
+- Model card
+- AI governance card
+- Validation checklist
+- Independent validation report
+- Fairness validation report
+- Monitoring plan
+- Final project report
+- Streamlit governance dashboard
+
+These artifacts provide committee-level traceability and support reproducible model governance.
+
+## Recommendation
+
+The model should be treated as conditionally approvable for demonstration and research purposes only.
+
+Production approval would require:
+
+- Business-owner signoff
+- Legal and compliance review
+- Fair lending review
+- Data lineage review
+- Threshold governance
+- Human oversight procedures
+- Ongoing monitoring controls
+- Periodic revalidation
+- Formal model-risk committee approval
+
+## Final Committee Position
+
+Conditional approval for portfolio demonstration and GitHub presentation.
+
+Not approved for production lending use without additional institutional controls, legal review, compliance review, and formal model-risk governance approval.
