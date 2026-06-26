@@ -1,0 +1,14 @@
+﻿pandas
+numpy
+scikit-learn
+scipy
+matplotlib
+joblib
+requests
+pyyaml
+tqdm
+jupyter
+ipykernel
+pytest
+fairlearn
+shap
