@@ -1,124 +1,154 @@
 ﻿# AssuranceTwin AI
 
+## Reproducible AI Governance and Independent Model Validation for High-Stakes Financial Machine Learning
+
+AssuranceTwin AI is a reproducible model validation and AI governance project designed for high-stakes financial machine learning models. The project simulates how an independent model validation team would review, challenge, document, monitor, and govern a machine learning model used in a regulated financial services setting.
+
+The project uses public mortgage lending data to build champion and challenger models, evaluate predictive performance, test fairness and bias, assess calibration, review explainability, conduct stress testing, simulate drift monitoring, and generate governance-ready documentation for a model risk committee.
+
+This project is also designed as the foundation for a future journal paper on reproducible AI governance and independent validation of high-stakes financial machine learning models.
+
+---
+
 ## 1. Project Overview
 
-**AssuranceTwin AI** is an end-to-end model validation and AI governance project for financial-services machine learning. The project demonstrates how a high-stakes predictive model should be evaluated beyond standard performance metrics.
+The central question of this project is:
 
-The central argument of this repository is:
+**Can a machine learning model with strong predictive performance still be unsuitable for approval under a rigorous AI governance and model risk management framework?**
 
-> The best predictive model is not automatically the best governed model.
+AssuranceTwin AI demonstrates that predictive accuracy alone is not sufficient for responsible model approval. A model may perform well overall but still raise concerns related to fairness, calibration, explainability, stress sensitivity, monitoring readiness, and documentation completeness.
 
-This project simulates the work of an independent model validation, model risk management, and responsible AI governance team. It includes model inventory, champion/challenger modeling, independent validation metrics, fairness testing, calibration review, explainability analysis, stress testing, drift monitoring, governance documentation, and a Streamlit dashboard.
+The project creates a reproducible validation pipeline that evaluates models across multiple dimensions:
 
-The project is designed to demonstrate practical experience in:
+- Predictive performance
+- Champion and challenger comparison
+- Independent validation metrics
+- Fairness and bias testing
+- Calibration analysis
+- Explainability and explanation stability
+- Stress testing
+- Drift and monitoring simulation
+- Governance documentation
+- Model risk committee reporting
+- Composite AssuranceTwin Score
 
-- Model Validation
-- AI Governance
-- Model Risk Management
-- Responsible AI
-- Financial Services AI
-- Risk Analytics
-- GenAI-supported governance documentation
+The result is a full model validation and AI governance workflow that resembles the documentation package expected in financial services model risk management.
 
 ---
 
 ## 2. Why This Project Matters
 
-Financial-services AI systems are often used in high-impact decision environments. In these settings, model governance requires more than predictive accuracy.
+Financial institutions increasingly use machine learning models for high-impact decisions. These models may influence credit decisions, risk assessments, customer segmentation, fraud detection, pricing, underwriting, and operational workflows.
 
-A responsible validation process should examine:
+In regulated environments, model approval cannot rely only on metrics such as AUC, accuracy, or F1 score. Independent validation must also examine whether the model is fair, stable, explainable, calibrated, stress-resilient, monitored, and properly documented.
 
-- Model purpose and intended use
-- Data quality and limitations
-- Champion and challenger performance
-- Calibration quality
-- Fairness and bias risk
-- Explainability and feature stability
-- Stress-test behavior
-- Drift and monitoring readiness
-- Human oversight
-- Documentation completeness
-- Model risk committee readiness
+This project is relevant to:
 
-This project demonstrates how those controls can be organized into a reproducible GitHub portfolio project.
+- Model Validation
+- Model Risk Management
+- AI Governance
+- Responsible AI
+- Financial Services AI
+- Credit Risk Analytics
+- Fair Lending Analytics
+- Risk Analytics
+- GenAI-Supported Documentation
+- Model Risk Committee Reporting
+
+The main governance argument is:
+
+**The best predictive model is not automatically the best governed model.**
 
 ---
 
 ## 3. Dataset
 
-This project uses a public mortgage lending dataset structure inspired by HMDA-style Loan/Application Records.
+This project uses public mortgage lending data from the Home Mortgage Disclosure Act dataset.
 
-The modeling task is framed as a binary classification problem:
-
-- `approved = 1`: application is approval or origination related
-- `approved = 0`: application is not approval or origination related
-
-The project uses the data for educational, research, and portfolio demonstration purposes only.
-
-Raw data files are not committed to the repository. Users should place raw data locally under:
+The modeling task is structured as a binary classification problem:
 
 ```text
-data/raw/
+approved = 1 if the application outcome is approval or origination-related
+approved = 0 otherwise
 ```
 
-Processed modeling outputs are saved under:
+The raw dataset is not committed to the repository because it may be large. The expected local raw data path is:
 
 ```text
-data/processed/
-reports/tables/
-reports/figures/
-reports/validation/
+data/raw/hmda_lar_nj_2024.csv
 ```
+
+The processed modeling dataset is generated by the project pipeline and saved to:
+
+```text
+data/processed/hmda_modeling_dataset.csv
+```
+
+The dataset is used to demonstrate a realistic high-stakes financial machine learning validation workflow.
 
 ---
 
 ## 4. Model Validation and AI Governance Framework
 
-The repository follows a structured model validation and AI governance workflow.
+AssuranceTwin AI evaluates models through a governance-oriented validation framework.
 
-| Component | Purpose |
-|---|---|
-| Model Inventory | Documents ownership, business use, risk tier, monitoring frequency, and approval status |
-| Data Inspection | Reviews schema, missingness, target distribution, and data usability |
-| Champion/Challenger Modeling | Compares multiple model candidates under both performance and governance criteria |
-| Independent Validation Metrics | Evaluates predictive quality, confusion matrix behavior, approval rate, and error rates |
-| Fairness and Bias Testing | Reviews group-level outcome differences and potential disparate impact |
-| Calibration Analysis | Tests whether predicted probabilities are reliable |
-| Explainability Review | Evaluates feature importance and explanation stability |
-| Stress Testing | Simulates adverse scenarios and distribution shifts |
-| Drift Monitoring | Evaluates data drift, prediction drift, performance drift, fairness drift, and calibration drift |
-| AssuranceTwin Score | Combines validation and governance dimensions into a structured scorecard |
-| Governance Documentation | Produces model card, AI governance card, validation checklist, and committee summary |
+The framework contains the following components:
 
----
+### 4.1 Data Inspection
 
-## 5. Champion and Challenger Model Design
+The project first inspects the raw dataset to assess schema quality, missingness, target distribution, and modeling feasibility.
 
-The project trains and compares several model candidates:
+Generated outputs include:
+
+- `reports/tables/hmda_schema_summary.csv`
+- `reports/tables/missing_value_summary.csv`
+- `reports/tables/target_distribution.csv`
+- `reports/figures/missingness_plot.png`
+
+### 4.2 Clean Modeling Dataset
+
+The project creates a clean modeling dataset for validation and governance analysis.
+
+Generated outputs include:
+
+- `data/processed/hmda_modeling_dataset.csv`
+- `reports/tables/modeling_dataset_summary.csv`
+- `reports/tables/modeling_target_distribution.csv`
+
+### 4.3 Model Inventory
+
+The model inventory documents the model purpose, business use, risk tier, validation status, owner, validator, monitoring frequency, limitations, and approval status.
+
+Generated outputs include:
+
+- `docs/model_inventory_template.md`
+- `reports/tables/model_inventory.csv`
+
+### 4.4 Champion and Challenger Model Development
+
+The project trains several candidate models and compares them using predictive and governance-relevant criteria.
+
+Models include:
 
 - Logistic Regression
 - Random Forest
 - Gradient Boosting
 - Calibrated Logistic Regression
-- Optional XGBoost or LightGBM, depending on local package availability
+- Optional XGBoost or LightGBM, if installed
 
-The champion model is not selected only by the strongest predictive metric. The project also considers:
+Generated outputs include:
 
-- Calibration quality
-- Fairness behavior
-- Robustness under stress
-- Drift stability
-- Explainability stability
-- Monitoring readiness
-- Documentation completeness
+- `reports/tables/model_performance_summary.csv`
+- `reports/figures/roc_curves.png`
+- `reports/figures/precision_recall_curves.png`
+- `models/champion_model.pkl`
+- `models/challenger_model.pkl`
 
-This structure reflects a model risk management principle: strong AUC alone is not sufficient for approval in a high-stakes financial-services setting.
+### 4.5 Independent Validation
 
----
+The independent validation process evaluates whether model performance is reliable enough for governance review.
 
-## 6. Independent Validation Metrics
-
-The independent validation module evaluates:
+Validation metrics include:
 
 - AUC
 - Accuracy
@@ -133,18 +163,24 @@ The independent validation module evaluates:
 - False Positive Rate
 - False Negative Rate
 
-Output files:
+Generated outputs include:
 
-- [reports/validation/model_validation_report.md](reports/validation/model_validation_report.md)
-- [reports/tables/independent_validation_metrics.csv](reports/tables/independent_validation_metrics.csv)
+- `reports/validation/model_validation_report.md`
+- `reports/tables/independent_validation_metrics.csv`
 
----
+### 4.6 Fairness and Bias Testing
 
-## 7. Fairness and Bias Review
+The fairness review evaluates whether model outcomes differ materially across protected or governance-relevant groups.
 
-The fairness review tests group-level differences across available borrower and geography-related attributes.
+Fairness dimensions include:
 
-Metrics include:
+- Race
+- Ethnicity
+- Sex
+- Income band
+- Minority-tract band
+
+Fairness metrics include:
 
 - Approval-rate difference
 - Disparate impact ratio
@@ -153,80 +189,64 @@ Metrics include:
 - Equal opportunity difference
 - Calibration by group
 
-Output files:
+Generated outputs include:
 
-- [reports/validation/fairness_validation_report.md](reports/validation/fairness_validation_report.md)
-- [reports/tables/fairness_metrics.csv](reports/tables/fairness_metrics.csv)
-- [reports/figures/fairness_group_comparison.png](reports/figures/fairness_group_comparison.png)
+- `reports/validation/fairness_validation_report.md`
+- `reports/tables/fairness_metrics.csv`
+- `reports/figures/fairness_group_comparison.png`
 
----
+### 4.7 Calibration Analysis
 
-## 8. Calibration Review
+Calibration analysis evaluates whether predicted probabilities are reliable. This is important because a model can have strong ranking performance but poorly calibrated probability estimates.
 
-Calibration matters because financial decision models often rely on probability estimates, not only classification labels.
+Generated outputs include:
 
-A model with strong AUC can still produce unreliable probabilities. Poor calibration can distort:
+- `reports/tables/calibration_summary.csv`
+- `reports/figures/calibration_curve.png`
 
-- Risk ranking
-- Threshold selection
-- Approval logic
-- Portfolio monitoring
-- Model risk reporting
+### 4.8 Explainability and Explanation Stability
 
-Output files:
-
-- [reports/tables/calibration_summary.csv](reports/tables/calibration_summary.csv)
-- [reports/figures/calibration_curve.png](reports/figures/calibration_curve.png)
-
----
-
-## 9. Explainability and Stability Review
-
-The explainability module evaluates whether model explanations are stable across models, time periods, and group-level segments.
+The explainability review evaluates which features drive predictions and whether explanations remain stable across time, groups, and model types.
 
 Methods include:
 
 - Feature importance
 - Permutation importance
-- SHAP-style explanation analysis, when available
+- SHAP values, if available
 - Group-level explanation comparison
 - Explanation stability across time splits
 
-Output files:
+Generated outputs include:
 
-- [reports/figures/feature_importance.png](reports/figures/feature_importance.png)
-- [reports/figures/shap_summary.png](reports/figures/shap_summary.png)
-- [reports/tables/explanation_stability.csv](reports/tables/explanation_stability.csv)
+- `reports/figures/feature_importance.png`
+- `reports/figures/shap_summary.png`
+- `reports/tables/explanation_stability.csv`
 
----
+### 4.9 Stress Testing
 
-## 10. Stress Testing
-
-The stress-testing module evaluates model behavior under adverse or shifted conditions.
+Stress testing evaluates model sensitivity under adverse or shifted conditions.
 
 Stress scenarios include:
 
 - Income shock
 - Loan amount increase
-- LTV increase
+- Loan-to-value increase
 - Missing-data shock
 - Minority-tract distribution shift
 - Out-of-time validation
 - Recession-like synthetic scenario
 
-Output files:
+Generated outputs include:
 
-- [reports/tables/stress_test_results.csv](reports/tables/stress_test_results.csv)
-- [reports/figures/stress_test_model_sensitivity.png](reports/figures/stress_test_model_sensitivity.png)
-- [reports/validation/stress_testing_report.md](reports/validation/stress_testing_report.md)
+- `reports/tables/stress_test_results.csv`
+- `reports/figures/stress_test_model_sensitivity.png`
+- `reports/validation/stress_testing_report.md`
 
----
+### 4.10 Drift Monitoring
 
-## 11. Drift Monitoring
+The monitoring module simulates ongoing model surveillance using time-based splits and drift metrics.
 
-The monitoring module simulates lifecycle governance after model development.
-
-It evaluates:
+Monitoring dimensions include:
 
 - Population Stability Index
 - Characteristic Stability Index
@@ -236,63 +256,123 @@ It evaluates:
 - Fairness drift
 - Calibration drift
 
-Output files:
+Generated outputs include:
 
-- [reports/tables/drift_monitoring_summary.csv](reports/tables/drift_monitoring_summary.csv)
-- [reports/figures/drift_dashboard_plot.png](reports/figures/drift_dashboard_plot.png)
-- [reports/validation/monitoring_plan.md](reports/validation/monitoring_plan.md)
+- `reports/tables/drift_monitoring_summary.csv`
+- `reports/figures/drift_dashboard_plot.png`
+- `reports/validation/monitoring_plan.md`
 
----
+### 4.11 AssuranceTwin Score
 
-## 12. AssuranceTwin Score
+The AssuranceTwin Score is a composite governance score that combines multiple model validation dimensions into a single decision-support metric.
 
-The AssuranceTwin Score combines model performance and AI governance dimensions into a single scorecard.
+The score combines:
 
-| Dimension | Weight |
-|---|---:|
-| Predictive Performance | 20% |
-| Calibration | 15% |
-| Fairness | 20% |
-| Robustness / Stress Testing | 15% |
-| Drift Stability | 10% |
-| Explainability Stability | 10% |
-| Documentation Completeness | 5% |
-| Monitoring Readiness | 5% |
+- Predictive Performance Score
+- Calibration Score
+- Fairness Score
+- Robustness / Stress-Test Score
+- Drift Stability Score
+- Explainability Stability Score
+- Documentation Completeness Score
+- Monitoring Readiness Score
 
-Output files:
+Formula:
 
-- [reports/tables/assurancetwin_scorecard.csv](reports/tables/assurancetwin_scorecard.csv)
-- [reports/figures/assurancetwin_score_radar.png](reports/figures/assurancetwin_score_radar.png)
+```text
+AssuranceTwin Score =
+0.20 × Performance
++ 0.15 × Calibration
++ 0.20 × Fairness
++ 0.15 × Robustness
++ 0.10 × Drift Stability
++ 0.10 × Explainability Stability
++ 0.05 × Documentation Completeness
++ 0.05 × Monitoring Readiness
+```
 
----
+Generated outputs include:
 
-## 13. Final Governance and Validation Deliverables
-
-The repository includes the following final model validation and AI governance artifacts.
-
-| Deliverable | File |
-|---|---|
-| Final Project Report | [reports/final/final_project_report.md](reports/final/final_project_report.md) |
-| Independent Model Validation Report | [reports/validation/model_validation_report.md](reports/validation/model_validation_report.md) |
-| Fairness Validation Report | [reports/validation/fairness_validation_report.md](reports/validation/fairness_validation_report.md) |
-| Monitoring Plan | [reports/validation/monitoring_plan.md](reports/validation/monitoring_plan.md) |
-| Model Risk Committee Summary | [reports/validation/model_risk_committee_summary.md](reports/validation/model_risk_committee_summary.md) |
-| Model Card | [docs/model_card.md](docs/model_card.md) |
-| AI Governance Card | [docs/ai_governance_card.md](docs/ai_governance_card.md) |
-| Validation Checklist | [docs/validation_checklist.md](docs/validation_checklist.md) |
-| Streamlit Governance Dashboard | [dashboard/streamlit_app.py](dashboard/streamlit_app.py) |
+- `reports/tables/assurancetwin_scorecard.csv`
+- `reports/figures/assurancetwin_score_radar.png`
+- `reports/validation/model_risk_committee_summary.md`
 
 ---
 
-## 14. Streamlit Governance Dashboard
+## 5. Key Project Argument
 
-The repository includes a Streamlit dashboard for reviewing model validation and AI governance results.
+The core finding of this project is that model approval should not be based only on predictive performance.
 
-Dashboard file:
+A model may have strong AUC, accuracy, or F1 score while still presenting material governance concerns. These concerns may include:
 
-- [dashboard/streamlit_app.py](dashboard/streamlit_app.py)
+- Group-level fairness gaps
+- Poor probability calibration
+- Instability under stress scenarios
+- Drift risk
+- Weak monitoring design
+- Unstable explanations
+- Incomplete documentation
+- Insufficient human oversight
 
-Dashboard tabs include:
+Therefore, AssuranceTwin AI separates predictive strength from governance readiness.
+
+---
+
+## 6. Repository Outputs
+
+By the end of the project, the repository contains the following core outputs.
+
+### Main Documentation
+
+- [Model Card](docs/model_card.md)
+- [AI Governance Card](docs/ai_governance_card.md)
+- [Validation Checklist](docs/validation_checklist.md)
+- [Model Inventory Template](docs/model_inventory_template.md)
+
+### Final Reports
+
+- [Final Project Report](reports/final/final_project_report.md)
+- [Model Validation Report](reports/validation/model_validation_report.md)
+- [Fairness Validation Report](reports/validation/fairness_validation_report.md)
+- [Monitoring Plan](reports/validation/monitoring_plan.md)
+- [Stress Testing Report](reports/validation/stress_testing_report.md)
+- [Model Risk Committee Summary](reports/validation/model_risk_committee_summary.md)
+
+### Tables
+
+- `reports/tables/model_inventory.csv`
+- `reports/tables/model_performance_summary.csv`
+- `reports/tables/independent_validation_metrics.csv`
+- `reports/tables/fairness_metrics.csv`
+- `reports/tables/calibration_summary.csv`
+- `reports/tables/explanation_stability.csv`
+- `reports/tables/stress_test_results.csv`
+- `reports/tables/drift_monitoring_summary.csv`
+- `reports/tables/assurancetwin_scorecard.csv`
+
+### Figures
+
+- `reports/figures/roc_curves.png`
+- `reports/figures/precision_recall_curves.png`
+- `reports/figures/calibration_curve.png`
+- `reports/figures/fairness_group_comparison.png`
+- `reports/figures/feature_importance.png`
+- `reports/figures/shap_summary.png`
+- `reports/figures/stress_test_model_sensitivity.png`
+- `reports/figures/drift_dashboard_plot.png`
+- `reports/figures/assurancetwin_score_radar.png`
+
+### Dashboard
+
+- `dashboard/streamlit_app.py`
+
+---
+
+## 7. Streamlit Governance Dashboard
+
+The project includes a local Streamlit dashboard for reviewing the model validation and governance results.
+
+The dashboard contains the following tabs:
 
 - Model Inventory
 - Champion vs Challenger
@@ -304,31 +384,34 @@ Dashboard tabs include:
 - AssuranceTwin Score
 - Model Risk Committee Summary
 
-Run locally with:
+Run the dashboard locally with:
 
 ```powershell
 streamlit run dashboard/streamlit_app.py
 ```
 
-The dashboard runs locally on the user's machine. The local Streamlit URL should not be treated as a public GitHub deployment link.
+The dashboard is intended for local execution. The local browser address should not be treated as a public deployment link.
 
 ---
 
-## 15. Repository Structure
+## 8. Project Structure
 
 ```text
 assurancetwin-ai-model-validation-governance/
 │
 ├── README.md
 │
+├── data/
+│   ├── raw/
+│   │   └── hmda_lar_nj_2024.csv
+│   └── processed/
+│       └── hmda_modeling_dataset.csv
+│
 ├── dashboard/
 │   └── streamlit_app.py
 │
-├── data/
-│   ├── raw/
-│   └── processed/
-│
 ├── docs/
+│   ├── model_inventory_template.md
 │   ├── model_card.md
 │   ├── ai_governance_card.md
 │   └── validation_checklist.md
@@ -354,7 +437,6 @@ assurancetwin-ai-model-validation-governance/
 │   │
 │   ├── tables/
 │   │   ├── model_inventory.csv
-│   │   ├── modeling_dataset_summary.csv
 │   │   ├── model_performance_summary.csv
 │   │   ├── independent_validation_metrics.csv
 │   │   ├── fairness_metrics.csv
@@ -367,118 +449,92 @@ assurancetwin-ai-model-validation-governance/
 │   └── validation/
 │       ├── model_validation_report.md
 │       ├── fairness_validation_report.md
-│       ├── stress_testing_report.md
 │       ├── monitoring_plan.md
+│       ├── stress_testing_report.md
 │       └── model_risk_committee_summary.md
 │
-└── scripts/
-    ├── 00_environment_check.py
-    ├── 02_inspect_hmda_schema.py
-    ├── 03_create_clean_hmda_dataset.py
-    ├── 04_create_model_inventory.py
-    ├── 05_train_champion_challenger_models.py
-    ├── 06_independent_validation_metrics.py
-    ├── 07_fairness_bias_testing.py
-    ├── 08_calibration_analysis.py
-    ├── 09_explainability_stability.py
-    ├── 10_stress_testing.py
-    ├── 11_monitoring_drift_simulation.py
-    ├── 12_assurancetwin_score.py
-    ├── 13_generate_model_validation_report.py
-    └── 14_generate_model_card.py
+├── scripts/
+│   ├── 00_environment_check.py
+│   ├── 01_download_or_prepare_hmda_data.py
+│   ├── 02_inspect_hmda_schema.py
+│   ├── 03_create_clean_hmda_dataset.py
+│   ├── 04_create_model_inventory.py
+│   ├── 05_train_champion_challenger_models.py
+│   ├── 06_independent_validation_metrics.py
+│   ├── 07_fairness_bias_testing.py
+│   ├── 08_calibration_analysis.py
+│   ├── 09_explainability_stability.py
+│   ├── 10_stress_testing.py
+│   ├── 11_monitoring_drift_simulation.py
+│   ├── 12_assurancetwin_score.py
+│   ├── 13_generate_model_validation_report.py
+│   └── 14_generate_model_card.py
+│
+├── requirements.txt
+├── environment.yml
+└── .gitignore
 ```
 
 ---
 
-## 16. How to Run the Project
+## 9. How to Reproduce the Project
 
-Run the scripts from the repository root.
+### Step 1: Clone the Repository
 
-### Step 1: Environment Check
+```powershell
+git clone https://github.com/YOUR-USERNAME/assurancetwin-ai-model-validation-governance.git
+cd assurancetwin-ai-model-validation-governance
+```
+
+Replace `YOUR-USERNAME` with the correct GitHub username.
+
+### Step 2: Create and Activate the Environment
+
+Using Python virtual environment:
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+```
+
+Or using Conda:
+
+```powershell
+conda env create -f environment.yml
+conda activate assurancetwin-ai-model-validation-governance
+```
+
+### Step 3: Add the Raw Dataset
+
+Place the raw HMDA file here:
+
+```text
+data/raw/hmda_lar_nj_2024.csv
+```
+
+### Step 4: Run the Pipeline
+
+Run the scripts in order:
 
 ```powershell
 python scripts/00_environment_check.py
-```
-
-### Step 2: Inspect Raw Dataset
-
-```powershell
 python scripts/02_inspect_hmda_schema.py
-```
-
-### Step 3: Create Clean Modeling Dataset
-
-```powershell
 python scripts/03_create_clean_hmda_dataset.py
-```
-
-### Step 4: Create Model Inventory
-
-```powershell
 python scripts/04_create_model_inventory.py
-```
-
-### Step 5: Train Champion and Challenger Models
-
-```powershell
 python scripts/05_train_champion_challenger_models.py
-```
-
-### Step 6: Independent Validation Metrics
-
-```powershell
 python scripts/06_independent_validation_metrics.py
-```
-
-### Step 7: Fairness and Bias Testing
-
-```powershell
 python scripts/07_fairness_bias_testing.py
-```
-
-### Step 8: Calibration Analysis
-
-```powershell
 python scripts/08_calibration_analysis.py
-```
-
-### Step 9: Explainability and Stability
-
-```powershell
 python scripts/09_explainability_stability.py
-```
-
-### Step 10: Stress Testing
-
-```powershell
 python scripts/10_stress_testing.py
-```
-
-### Step 11: Monitoring and Drift Simulation
-
-```powershell
 python scripts/11_monitoring_drift_simulation.py
-```
-
-### Step 12: AssuranceTwin Score
-
-```powershell
 python scripts/12_assurancetwin_score.py
-```
-
-### Step 13: Generate Model Validation Report
-
-```powershell
 python scripts/13_generate_model_validation_report.py
-```
-
-### Step 14: Generate Model Card and AI Governance Card
-
-```powershell
 python scripts/14_generate_model_card.py
 ```
 
-### Step 15: Run the Streamlit Dashboard
+### Step 5: Run the Dashboard
 
 ```powershell
 streamlit run dashboard/streamlit_app.py
@@ -486,76 +542,291 @@ streamlit run dashboard/streamlit_app.py
 
 ---
 
-## 17. Model Risk Committee Summary
+## 10. Validation Reports
 
-The project includes a committee-style summary that consolidates the main governance findings.
+The main validation reports are:
 
-File:
+### Final Project Report
 
-- [reports/validation/model_risk_committee_summary.md](reports/validation/model_risk_committee_summary.md)
+[reports/final/final_project_report.md](reports/final/final_project_report.md)
 
-The recommendation is conditional approval for demonstration and research purposes only.
+This report summarizes the full project, including dataset preparation, model development, validation results, governance findings, and final conclusions.
 
-Production use would require:
+### Model Validation Report
 
-- Business-owner approval
-- Legal and compliance review
-- Fair lending review
-- Data lineage review
-- Threshold governance
-- Human oversight procedures
-- Ongoing monitoring controls
-- Periodic revalidation
-- Formal model risk committee approval
+[reports/validation/model_validation_report.md](reports/validation/model_validation_report.md)
 
----
+This report presents the independent validation review, including model purpose, methodology, conceptual soundness, validation results, challenger review, calibration review, fairness review, explainability review, stress testing, monitoring, limitations, and approval recommendation.
 
-## 18. Project Limitations
+### Fairness Validation Report
 
-This repository is a portfolio and research demonstration. It is not a production lending system.
+[reports/validation/fairness_validation_report.md](reports/validation/fairness_validation_report.md)
 
-Important limitations:
+This report evaluates model outcomes across protected and governance-relevant groups and summarizes fairness risks.
 
-- The project is based on public mortgage data structure and simulated governance workflows.
-- The outputs are for educational and professional demonstration purposes.
-- Any production use would require institutional review, legal review, compliance review, fair lending review, data governance review, and formal model risk approval.
-- Group-level fairness findings require careful interpretation and domain review.
-- Model monitoring thresholds should be customized before production deployment.
-- The AssuranceTwin Score is a governance aid, not a substitute for expert validation judgment.
+### Monitoring Plan
+
+[reports/validation/monitoring_plan.md](reports/validation/monitoring_plan.md)
+
+This report defines the ongoing monitoring approach for drift, performance, fairness, calibration, and governance review.
+
+### Model Risk Committee Summary
+
+[reports/validation/model_risk_committee_summary.md](reports/validation/model_risk_committee_summary.md)
+
+This summary is designed for senior reviewers and model risk committee stakeholders.
 
 ---
 
-## 19. Professional Relevance
+## 11. Governance Documentation
 
-This project is directly relevant to roles involving:
+The project includes governance-ready documentation artifacts.
 
-- Model Validation
-- AI Governance
-- Model Risk Management
-- Responsible AI
-- Credit Risk Analytics
-- Financial Services AI
-- Risk Analytics
-- Fairness and Bias Testing
-- Model Monitoring
-- GenAI-supported Documentation
-- Regulatory and Committee-Level Model Review
+### Model Card
+
+[docs/model_card.md](docs/model_card.md)
+
+The model card documents the model purpose, intended use, data, performance, limitations, monitoring requirements, and governance considerations.
+
+### AI Governance Card
+
+[docs/ai_governance_card.md](docs/ai_governance_card.md)
+
+The AI governance card documents intended use, out-of-scope use, protected attribute handling, known risks, human oversight, monitoring requirements, and approval recommendation.
+
+### Validation Checklist
+
+[docs/validation_checklist.md](docs/validation_checklist.md)
+
+The validation checklist provides a structured review of model development, validation, fairness, explainability, calibration, stress testing, monitoring, documentation, and approval readiness.
 
 ---
 
-## 20. Final Positioning
+## 12. AssuranceTwin Score
 
-AssuranceTwin AI demonstrates a practical, reproducible, and governance-centered approach to machine learning validation in financial services.
+The AssuranceTwin Score is the project’s central contribution.
 
-The project moves beyond standard machine-learning evaluation by combining:
+It is designed to provide a composite view of model governance readiness by combining multiple validation dimensions.
+
+The score is not intended to replace expert judgment. Instead, it supports structured review by making trade-offs visible.
+
+A model with high predictive performance but weak fairness, calibration, or monitoring readiness may receive a lower AssuranceTwin Score than a simpler model with stronger governance characteristics.
+
+This supports the central project claim:
+
+**Model approval should be based on total governance readiness, not only predictive performance.**
+
+---
+
+## 13. Example Model Risk Committee Interpretation
+
+A model risk committee could use the outputs of this project to answer the following questions:
+
+1. Is the model conceptually sound?
+2. Is the model performance acceptable?
+3. Does the model perform consistently across groups?
+4. Are predicted probabilities reliable?
+5. Are the model’s explanations stable and interpretable?
+6. Is the model sensitive to adverse economic or data-quality scenarios?
+7. Is there evidence of drift or monitoring weakness?
+8. Is the model documentation complete?
+9. Are human oversight requirements defined?
+10. Should the model be approved, conditionally approved, rejected, or remediated?
+
+---
+
+## 14. Journal Paper Direction
+
+This GitHub project is designed not only as a technical portfolio artifact, but also as the foundation for a future journal paper in model validation, AI governance, and financial services model risk management.
+
+A potential paper title is:
+
+**A Reproducible AI Governance Framework for Independent Validation of High-Stakes Financial Machine Learning Models**
+
+### Proposed Journal Contribution
+
+The project supports several possible scholarly contributions.
+
+#### 1. A Composite AssuranceTwin Score for AI Model Validation
+
+The AssuranceTwin Score combines predictive performance, calibration, fairness, robustness, drift stability, explainability stability, documentation completeness, and monitoring readiness into a single governance-oriented model assessment score.
+
+#### 2. A Reproducible Public-Data Benchmark for Model Validation and Governance
+
+The project uses public mortgage lending data to create a transparent benchmark for validating high-stakes financial machine learning models. This allows the full validation workflow to be reproduced, audited, and extended.
+
+#### 3. Evidence That Predictive Performance Alone Is Insufficient for Model Approval
+
+The champion and challenger model results show that the best-performing model is not necessarily the most governance-ready model. Approval decisions should also consider fairness, calibration, explainability, stress resilience, monitoring readiness, and documentation quality.
+
+#### 4. An Integrated Framework for Responsible AI Validation
+
+The project connects several validation dimensions that are often evaluated separately:
 
 - Predictive performance
-- Calibration
-- Fairness
-- Explainability
+- Fairness and bias testing
+- Calibration quality
+- Explainability and explanation stability
 - Stress testing
 - Drift monitoring
-- Documentation
-- Committee-level governance review
+- Documentation completeness
+- Model risk committee reporting
 
-This makes the repository suitable for demonstrating applied capability in model validation, responsible AI, and financial-services AI governance.
+#### 5. A Governance-Ready Reporting Pipeline
+
+The repository generates documentation and reports that resemble the artifacts expected in a model risk management environment, including model cards, AI governance cards, validation checklists, monitoring plans, fairness reports, and model risk committee summaries.
+
+### Potential Paper Structure
+
+A future journal paper based on this project could follow the structure below.
+
+#### 1. Introduction
+
+Introduce the need for reproducible AI governance frameworks in high-stakes financial machine learning. Explain why model validation must go beyond traditional predictive metrics.
+
+#### 2. Literature Review: Model Risk Management and AI Governance
+
+Review model risk management, responsible AI, financial services AI governance, fairness testing, calibration, explainability, stress testing, monitoring, and lifecycle governance.
+
+#### 3. Dataset and Problem Setting
+
+Describe the public mortgage lending dataset, the binary approval prediction task, the protected and quasi-protected attributes considered for governance review, and the limitations of using public data for validation research.
+
+#### 4. Champion and Challenger Model Development
+
+Present the model development process, including logistic regression, random forest, gradient boosting, calibrated models, and the distinction between predictive performance and governance readiness.
+
+#### 5. Independent Validation Framework
+
+Describe the independent validation workflow, including performance testing, fairness testing, calibration analysis, explainability review, stress testing, drift simulation, and documentation review.
+
+#### 6. AssuranceTwin Score Construction
+
+Define the composite AssuranceTwin Score and explain the rationale for its components and weights.
+
+```text
+AssuranceTwin Score =
+0.20 × Performance
++ 0.15 × Calibration
++ 0.20 × Fairness
++ 0.15 × Robustness
++ 0.10 × Drift Stability
++ 0.10 × Explainability Stability
++ 0.05 × Documentation Completeness
++ 0.05 × Monitoring Readiness
+```
+
+#### 7. Empirical Results
+
+Present model performance, fairness results, calibration results, explainability findings, stress-test outcomes, drift-monitoring results, and AssuranceTwin Score comparisons.
+
+#### 8. Governance Findings
+
+Discuss the implications for model approval, conditional approval, rejection, monitoring frequency, human oversight, and model risk committee decision-making.
+
+#### 9. Limitations
+
+Discuss limitations related to public data, proxy variables, simplified governance assumptions, lack of internal bank policy data, and the need for further validation using institutional data.
+
+#### 10. Conclusion
+
+Summarize the value of a reproducible AI governance framework for financial machine learning and describe future extensions, including GenAI governance, LLM validation, and agentic AI oversight.
+
+### Recommended Journal Positioning
+
+The strongest paper angle is:
+
+> Predictive performance is necessary but not sufficient for approval of high-stakes financial machine learning models. A reproducible governance framework should combine performance, fairness, calibration, robustness, explainability, monitoring, and documentation into an integrated validation decision.
+
+This positioning makes the project relevant to:
+
+- Model Validation
+- Model Risk Management
+- AI Governance
+- Responsible AI
+- Financial Services AI
+- Credit Risk Analytics
+- High-Stakes Machine Learning
+- Regulatory Technology
+- Governance Reporting Automation
+
+### Future Research Extensions
+
+Possible extensions for a full journal submission include:
+
+- Comparing alternative AssuranceTwin Score weighting schemes
+- Adding sensitivity analysis for governance score weights
+- Testing additional fairness metrics and intersectional groups
+- Extending the framework to GenAI and LLM-supported credit documentation
+- Adding human-in-the-loop approval review
+- Creating a reproducible validation benchmark across multiple public financial datasets
+- Comparing traditional model validation reports with AI-assisted governance documentation
+
+---
+
+## 15. Skills Demonstrated
+
+This project demonstrates practical experience in:
+
+- Independent model validation
+- Model risk management documentation
+- AI governance documentation
+- Responsible AI testing
+- Fairness and bias analysis
+- Calibration analysis
+- Explainable AI
+- Stress testing
+- Drift monitoring
+- Champion and challenger model comparison
+- Financial services machine learning
+- Credit risk analytics
+- Reproducible research
+- Python analytics pipeline development
+- Streamlit dashboard development
+- Governance-ready reporting automation
+
+---
+
+## 16. Technology Stack
+
+The project uses:
+
+- Python
+- pandas
+- NumPy
+- scikit-learn
+- matplotlib
+- joblib
+- Streamlit
+- SHAP, if available
+- fairlearn, if available
+- Git
+- GitHub
+- Markdown documentation
+
+---
+
+## 17. Limitations
+
+This project is designed as a reproducible public-data governance simulation. It has several limitations:
+
+- The public dataset does not contain all internal bank underwriting variables.
+- Some protected attributes may require careful interpretation or may be unavailable in complete form.
+- The project does not represent a real bank approval system.
+- The AssuranceTwin Score is a proposed governance score, not an official regulatory metric.
+- The model risk committee outputs are simulated for portfolio and research purposes.
+- Institutional policies, legal review, compliance review, and production monitoring would be required before any real-world deployment.
+
+---
+
+## 18. Conclusion
+
+AssuranceTwin AI demonstrates a reproducible framework for independent validation and AI governance of high-stakes financial machine learning models.
+
+The project shows that model validation should evaluate more than predictive performance. A governance-ready model should also demonstrate fairness, calibration, explainability, robustness, drift stability, monitoring readiness, and documentation completeness.
+
+The project’s main contribution is the integration of model validation, AI governance, and model risk committee reporting into one reproducible pipeline.
+
+The central conclusion is:
+
+**A high-performing model is not necessarily an approvable model. A model should be approved only when it is predictive, fair, calibrated, explainable, stress-resilient, monitorable, and properly documented.**
