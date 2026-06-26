@@ -1,0 +1,25 @@
+artifact,path,exists,artifact_type
+Model inventory,reports/tables/model_inventory.csv,True,csv
+Model performance summary,reports/tables/model_performance_summary.csv,True,csv
+Independent validation metrics,reports/tables/independent_validation_metrics.csv,True,csv
+Calibration summary,reports/tables/calibration_summary.csv,True,csv
+Fairness metrics,reports/tables/fairness_metrics.csv,True,csv
+Explanation stability,reports/tables/explanation_stability.csv,True,csv
+Stress test results,reports/tables/stress_test_results.csv,True,csv
+Drift monitoring summary,reports/tables/drift_monitoring_summary.csv,True,csv
+AssuranceTwin scorecard,reports/tables/assurancetwin_scorecard.csv,True,csv
+Clean HMDA modeling dataset,data/processed/hmda_modeling_dataset.csv,True,csv
+Fairness validation report,reports/validation/fairness_validation_report.md,True,md
+Stress testing report,reports/validation/stress_testing_report.md,True,md
+Monitoring plan,reports/validation/monitoring_plan.md,True,md
+Champion model,models/champion_model.pkl,True,pkl
+Challenger model,models/challenger_model.pkl,True,pkl
+ROC curves,reports/figures/roc_curves.png,True,figure
+Precision-recall curves,reports/figures/precision_recall_curves.png,True,figure
+Calibration curve,reports/figures/calibration_curve.png,True,figure
+Fairness group comparison,reports/figures/fairness_group_comparison.png,True,figure
+Feature importance,reports/figures/feature_importance.png,True,figure
+SHAP summary,reports/figures/shap_summary.png,True,figure
+Stress test sensitivity,reports/figures/stress_test_model_sensitivity.png,True,figure
+Drift dashboard,reports/figures/drift_dashboard_plot.png,True,figure
+AssuranceTwin radar,reports/figures/assurancetwin_score_radar.png,True,figure
